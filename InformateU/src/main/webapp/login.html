@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InformateU Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --primary-color: #4F46E5; /* Indigo */
+      --primary-hover: #4338CA;
+      --left-bg: #EEF2FF; /* Light Indigo */
+      --text-main: #111827; /* Dark Gray */
+      --text-muted: #6B7280;
+      --border-color: #E5E7EB;
+      --bg-input: #F9FAFB;
+      --error-color: #EF4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #FFFFFF;
+      overflow-x: hidden;
+    }
+
+    /* ==== LEFT PANEL ==== */
+    .left-panel {
+      flex: 1;
+      background-color: var(--left-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 500px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero-image {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      margin-bottom: 30px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      background-color: white; /* In case transparency needs backing */
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Soft floating background decorations */
+    .decoration {
+      position: absolute;
+      color: rgba(79, 70, 229, 0.15);
+      font-size: 2rem;
+      font-weight: bold;
+      font-style: italic;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .decoration.f-x { top: 10%; left: 10%; font-size: 3rem; }
+    .decoration.pi { top: 15%; right: 15%; font-size: 2.5rem; }
+    .decoration.sigma { bottom: 20%; left: 15%; font-size: 4rem; }
+
+    /* ==== RIGHT PANEL (FORM) ==== */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background-color: #FFFFFF;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background-color: var(--primary-color);
+      border-radius: 8px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 12px;
+      color: white;
+    }
+    
+    .brand-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .input-group {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--bg-input);
+      font-size: 1rem;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+      background-color: #FFFFFF;
+    }
+
+    .input-group input::placeholder {
+      color: #9CA3AF;
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.8rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .input-group.error input {
+      border-color: var(--error-color);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+
+    .input-group.error .error-message {
+      display: block;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--text-main); /* Dark solid button like in the image */
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      margin-top: 10px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-btn:hover {
+      background-color: #1F2937;
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-btn.loading .btn-text {
+      display: none;
+    }
+
+    .login-btn.loading .spinner {
+      display: block;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .register-link {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .register-link a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .register-link a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .left-panel, .right-panel {
+        width: 100%;
+        flex: none;
+        min-height: 50vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="decoration f-x">f(x)</div>
+    <div class="decoration pi">π</div>
+    <div class="decoration sigma">Σ</div>
+    
+    <div class="hero-content">
+      <img src="hero-image.png" alt="InformateU Illustration" class="hero-image">
+      <h1 class="hero-title">InformateU</h1>
+      <p class="hero-subtitle">Turn Your Brain into a Shared Resource.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="form-container">
+      
+      <div class="brand-header">
+        <div class="brand-icon">
+          <!-- Simple stacked layers icon -->
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+            <path d="M2 12L12 17L22 12"/>
+            <path d="M2 17L12 22L22 17"/>
+          </svg>
+        </div>
+        <div class="brand-name">InformateU</div>
+      </div>
+
+      <form id="loginForm" action="LoginServlet" method="POST">
+        <div class="input-group" id="emailGroup">
+          <label for="username">USERNAME / EMAIL</label>
+          <input type="text" id="username" name="username" placeholder="example@gmail.com" required>
+        </div>
+
+        <div class="input-group" id="passwordGroup">
+          <label for="password">PASSWORD</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+          
+        </div>
+
+        <button type="submit" class="login-btn" id="loginBtn">
+          Sign In
+        </button>
+
+        <div class="register-link">
+          Don't have an account? <a href="#">Join the community</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+</body>
+</html>
